@@ -1,0 +1,98 @@
+Set path
+Index path: /home/yu/sift/sift_1M_320.bin
+Loading GT:
+Loading queries:
+Query size: 1
+read index:
+initialize l2space
+build index
+Loading index from /home/yu/sift/sift_1M_320.bin:
+Actual memory usage: 6 Mb 
+current element count: 320
+size_data_per_element: 652
+maxlevel: 2
+maxM_: 16
+maxM0_: 32
+M_: 16
+enterpoint_node_: 115
+ef_: 16
+
+1
+ep_node: 115, cur_dist: 391315
+level: 2, size:    0, ep_node:      115
+level: 1, size:   16, ep_node:      115
+        node_id:     38, distance:   252001
+        node_id:     84, distance:   196520
+        node_id:     39, distance:   276802
+        node_id:     11, distance:   358899
+        node_id:     29, distance:   359050
+        node_id:     59, distance:   444115
+        node_id:    128, distance:   177127
+        node_id:    159, distance:   432793
+        node_id:    165, distance:   392971
+        node_id:    173, distance:   241251
+        node_id:    174, distance:   124576
+        node_id:    177, distance:   222985
+        node_id:    183, distance:   385592
+        node_id:    202, distance:   404796
+        node_id:    204, distance:   412287
+        node_id:    208, distance:   389318
+level: 1, size:   15, ep_node:      174
+        node_id:     59, distance:   444115
+        node_id:    159, distance:   432793
+        node_id:    165, distance:   392971
+        node_id:     11, distance:   358899
+        node_id:    115, distance:   391315
+        node_id:     29, distance:   359050
+        node_id:    173, distance:   241251
+        node_id:     39, distance:   276802
+        node_id:     38, distance:   252001
+        node_id:    128, distance:   177127
+        node_id:     84, distance:   196520
+        node_id:    177, distance:   222985
+        node_id:    183, distance:   385592
+        node_id:    202, distance:   404796
+        node_id:    204, distance:   412287
+level: 0, size:    7, ep node:      174, next node:      174
+      size id:    0, node_id:      131, dist: 133642;
+      size id:    1, node_id:       99, dist: 175760;
+      size id:    2, node_id:      149, dist: 119525;
+      size id:    3, node_id:      136, dist: 134896;
+      size id:    4, node_id:      190, dist: 85812;
+      size id:    5, node_id:      193, dist: 152622;
+      size id:    6, node_id:      292, dist: 98910;
+level: 0, size:    7, ep node:      190, next node:      292
+      size id:    0, node_id:      137, dist: 163774;
+      size id:    1, node_id:      123, dist: 117906;
+      size id:    2, node_id:      131, visited;
+      size id:    3, node_id:      174, visited;
+      size id:    4, node_id:      194, dist: 167343;
+      size id:    5, node_id:      224, dist: 98494;
+      size id:    6, node_id:      283, dist: 143266;
+level: 0, size:    9, ep node:      224, next node:      292
+      size id:    0, node_id:       47, dist: 190474;
+      size id:    1, node_id:      194, visited;
+      size id:    2, node_id:      137, visited;
+      size id:    3, node_id:      123, visited;
+      size id:    4, node_id:      149, visited;
+      size id:    5, node_id:      131, visited;
+      size id:    6, node_id:      190, visited;
+      size id:    7, node_id:      284, dist: 162655;
+      size id:    8, node_id:      292, visited;
+level: 0, size:    5, ep node:      292, next node:      123
+      size id:    0, node_id:      287, dist: 116449;
+      size id:    1, node_id:      219, dist: 153409;
+      size id:    2, node_id:      145, dist: 124210;
+      size id:    3, node_id:      174, visited;
+      size id:    4, node_id:      224, visited;
+level: 0, size:    8, ep node:      287, next node:      123
+      size id:    0, node_id:      149, visited;
+      size id:    1, node_id:      199, dist: 177108;
+      size id:    2, node_id:      244, dist: 189298;
+      size id:    3, node_id:      147, dist: 167902;
+      size id:    4, node_id:      275, dist: 132273;
+      size id:    5, node_id:      280, dist: 143512;
+      size id:    6, node_id:      284, visited;
+      size id:    7, node_id:      292, visited;
+4	         0	       433 us
+Actual memory usage: 6 Mb 
