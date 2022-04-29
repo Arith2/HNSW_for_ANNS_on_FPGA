@@ -860,7 +860,7 @@ int main(int argc, char** argv)
         if (externalLabel==gt_array[100*i]) {
             correct++;
         }
-        std::cout << "hw result: " << externalLabel << ", gt: " << gt_array[100*i] << std::endl;
+        // std::cout << "hw result: " << externalLabel << ", gt: " << gt_array[100*i] << std::endl;
         ddr_count += 4 * 128;
     }
     std::cout << "recall: " << correct << " / " << q_size << std::endl;
