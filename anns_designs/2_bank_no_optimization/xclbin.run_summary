@@ -1,0 +1,127 @@
+{
+    "schema_version": {
+        "major": "1",
+        "minor": "1",
+        "patch": "0"
+    },
+    "generation": {
+        "source": "ocl",
+        "PID": "1084",
+        "timestamp": "1651263449400"
+    },
+    "files": [
+        {
+            "name": "profile_summary.csv",
+            "type": "PROFILE"
+        },
+        {
+            "name": "timeline_trace.csv",
+            "type": "TRACE"
+        }
+    ],
+    "profile": {
+        "header": {
+            "name": "Profile Summary",
+            "generated": "2022-04-29 22:17:29",
+            "epochTime": "1651263449381",
+            "application": "host",
+            "platform": "Xilinx",
+            "toolVersion": "2020.2",
+            "XRT build version": "2.9.317",
+            "Build version branch": "2020.2_PU1",
+            "Build version hash": "b0230e59e22351fb957dc46a6e68d7560e5f630c",
+            "Build version date": "N\/A",
+            "flow": "Software Emulation",
+            "devices": "",
+            "totalTime": "21.679458"
+        },
+        "apiCalls": {
+            "clCreateContext": {
+                "numCalls": "1",
+                "totalTime": "8.6842330000000025",
+                "minTime": "8.6842330000000025",
+                "avgTime": "8.6842330000000025",
+                "maxTime": "8.6842330000000025"
+            },
+            "clGetExtensionFunctionAddress": {
+                "numCalls": "2",
+                "totalTime": "0.41279899999999969",
+                "minTime": "0.007159999999998945",
+                "avgTime": "0.20639949999999985",
+                "maxTime": "0.40563900000000075"
+            },
+            "clGetExtensionFunctionAddressForPlatform": {
+                "numCalls": "2",
+                "totalTime": "0.14182699999999571",
+                "minTime": "0.0023719999999975983",
+                "avgTime": "0.070913499999997853",
+                "maxTime": "0.13945499999999811"
+            },
+            "clGetPlatformInfo": {
+                "numCalls": "6",
+                "totalTime": "0.015886000000001843",
+                "minTime": "0.002009999999998513",
+                "avgTime": "0.0026476666666669737",
+                "maxTime": "0.0049150000000004468"
+            },
+            "clCreateCommandQueue": {
+                "numCalls": "1",
+                "totalTime": "0.0072270000000003165",
+                "minTime": "0.0072270000000003165",
+                "avgTime": "0.0072270000000003165",
+                "maxTime": "0.0072270000000003165"
+            },
+            "clGetDeviceIDs": {
+                "numCalls": "2",
+                "totalTime": "0.0068290000000033046",
+                "minTime": "0.0024070000000016023",
+                "avgTime": "0.0034145000000016523",
+                "maxTime": "0.0044220000000017023"
+            },
+            "clRetainDevice": {
+                "numCalls": "2",
+                "totalTime": "0.0061800000000005184",
+                "minTime": "0.0021120000000003358",
+                "avgTime": "0.0030900000000002592",
+                "maxTime": "0.0040680000000001826"
+            }
+        },
+        "kernelEnqueues": "",
+        "computeUnitUtilization": "",
+        "kernels": "",
+        "hostGlobal": {
+            "writes": "",
+            "reads": ""
+        },
+        "guidanceMetadata": {
+            "DEVICE_EXEC_TIME": {
+                "xilinx_u280_xdma_201920_3-0": "0.000000"
+            },
+            "CU_CALLS": "",
+            "MIGRATE_MEM": {
+                "host": "0"
+            },
+            "MEMORY_USAGE": "",
+            "PLRAM_DEVICE": {
+                "all": "1"
+            },
+            "HBM_DEVICE": {
+                "all": "1"
+            },
+            "KDMA_DEVICE": {
+                "all": "0"
+            },
+            "P2P_DEVICE": {
+                "all": "0"
+            },
+            "P2P_HOST_TRANSFERS": {
+                "host": "0"
+            },
+            "PORT_BIT_WIDTH": "",
+            "KERNEL_COUNT": "",
+            "OBJECTS_RELEASED": {
+                "all": "0"
+            }
+        }
+    }
+}

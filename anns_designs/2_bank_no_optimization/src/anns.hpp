@@ -1064,7 +1064,7 @@ void priorityQueue(
                         
                         swapQueue_even(cand_dist_list, cand_id_list, dyn_dist_list, dyn_id_list);
                         swapQueue_odd(cand_dist_list, cand_id_list, dyn_dist_list, dyn_id_list);
-                    }while(input_count < (size + QUEUE_SIZE)); 
+                    }while(input_count < (size + QUEUE_SIZE / 2)); 
                     // two extra comparison when all inputs are consumed
                     // enough information to get cand_min_dist and dyn_max_dist
                     dyn_max_dist = dyn_dist_list[QUEUE_SIZE-1];
