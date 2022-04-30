@@ -126,7 +126,7 @@ int main(int argc, char** argv)
     }
     input.close();
 
-    int q_size = 10000;
+    int q_size = 1;
     int ef_ = 128;
 
     if(argc >= 3)
@@ -173,8 +173,8 @@ int main(int argc, char** argv)
 	// cur_element_count*(1+maxM0_): store links in ground layer
     std::cout << "set size of memory banks" << std::endl;
     size_t HBM_data_size = 32 * 1024 * 1024; // store data
-    size_t HBM_link_size = 32 * 1024 * 1024; // store data
-    size_t HBM_query_size = 2500 * 128;
+    // size_t HBM_link_size = 32 * 1024 * 1024; // store data
+    size_t HBM_query_size = 5000 * 128;
     // size_t DDR_data_size = 32 * 1024 * 1024; // 
 //////////////////////////////   TEMPLATE END  //////////////////////////////
 
@@ -189,19 +189,19 @@ int main(int argc, char** argv)
     std::vector<uint32_t, aligned_allocator<uint32_t>> HBM1_data(HBM_data_size, 0);
     std::vector<uint32_t, aligned_allocator<uint32_t>> HBM2_data(HBM_data_size, 0);
     std::vector<uint32_t, aligned_allocator<uint32_t>> HBM3_data(HBM_data_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM4_data(HBM_link_size, 0);
+    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM4_data(HBM_data_size, 0);
     std::vector<uint32_t, aligned_allocator<uint32_t>> HBM5_data(HBM_data_size, 0);
     std::vector<uint32_t, aligned_allocator<uint32_t>> HBM6_data(HBM_data_size, 0);
     std::vector<uint32_t, aligned_allocator<uint32_t>> HBM7_data(HBM_data_size, 0);
     std::vector<uint32_t, aligned_allocator<uint32_t>> HBM8_data(HBM_data_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM9_data(HBM_link_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM10_data(HBM_link_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM11_data(HBM_data_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM12_data(HBM_query_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM13_data(HBM_query_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM14_data(HBM_query_size, 0);
-    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM15_data(HBM_query_size, 0);
-    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM4_data(HBM_link_size, 0);
+    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM9_data(HBM_data_size, 0);
+    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM10_data(HBM_data_size, 0);
+    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM11_data(HBM_data_size, 0);
+    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM12_data(HBM_data_size, 0);
+    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM13_data(HBM_data_size, 0);
+    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM14_data(HBM_data_size, 0);
+    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM15_data(HBM_data_size, 0);
+    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM16_data(HBM_link_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM17_data(HBM_data_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM18_data(HBM_data_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM19_data(HBM_data_size, 0);
@@ -210,15 +210,15 @@ int main(int argc, char** argv)
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM22_data(HBM_data_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM23_data(HBM_data_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM24_data(HBM_data_size, 0);
-    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM25_data(HBM_data_size, 0);
-    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM26_data(HBM_data_size, 0);
-    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM27_data(HBM_data_size, 0);
-    // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM28_data(HBM_data_size, 0);
+    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM25_data(HBM_data_size, 0);
+    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM26_data(HBM_data_size, 0);
+    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM27_data(HBM_query_size, 0);
+    std::vector<uint32_t, aligned_allocator<uint32_t>> HBM28_data(HBM_query_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM29_data(HBM_data_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM30_data(HBM_data_size, 0);
     // std::vector<uint32_t, aligned_allocator<uint32_t>> HBM31_data(HBM_data_size, 0);
 
-    // std::vector<int, aligned_allocator<int>> HBM7_data(DDR_data_size, 0);
+    // std::vector<int, aligned_allocator<int>> DDR0_data(DDR_data_size, 0);
     // std::vector<int, aligned_allocator<int>> DDR1_data(DDR_data_size, 0);
 //////////////////////////////   TEMPLATE START  //////////////////////////////
 // assign values to HBM
@@ -271,7 +271,7 @@ int main(int argc, char** argv)
     int index_link = cur_element_count / 16;
     for (int i = 0 ; i < (int) cur_element_count; i++) {
     // for (int i = 0 ; i < 16; i++) {
-        HBM10_data[i] = index_link;
+        HBM25_data[i] = index_link;
         // if (i==enterpoint_node_) {
         //     std::cout << "index_link: " << index_link << ", index_base: " << index_base << std::endl;
         // }
@@ -289,11 +289,11 @@ int main(int argc, char** argv)
                     if (m==0) {
                         high_link = (high_link & 0x00ffffff) | ((links_size & 0x000000ff) << 24);
                     }
-                    HBM10_data[index_base + k * maxM_ + m] = high_link;
+                    HBM25_data[index_base + k * maxM_ + m] = high_link;
                     // if (i==enterpoint_node_) {
                     //     std::cout << "index: " << (index_base + k * maxM_ + m) << ", data: " << (high_link & 0x00ffffff ) << std::endl;
                     // }
-                    // std::cout << "index: " << (index_base + index_link * 16 + k * maxM_ + m) << ", link: " << HBM7_data[index_base + index_link * 16 + k * maxM_ + m] << std::endl;
+                    // std::cout << "index: " << (index_base + index_link * 16 + k * maxM_ + m) << ", link: " << DDR0_data[index_base + index_link * 16 + k * maxM_ + m] << std::endl;
                 }
                 // if (i==enterpoint_node_) {
                 //     std::cout << std::endl;
@@ -323,36 +323,25 @@ int main(int argc, char** argv)
             // uint32_t query_data = Byte2Int_4(query_memory_ + i * size_data_per_query + 4 + 4 * j * 4);
 
             uint32_t query_data = Byte2Float(query_memory_ + i * size_data_per_query + 4 + 4 * j);
-
-            int index_base = i / 4;
-#ifndef DEBUG
-            if (i%4==0) {
-                HBM12_data[index_base * 128 + j] = query_data;
-            }
-            else if (i%4==1) {
-                HBM13_data[index_base * 128 + j] = query_data;
-            }
-            else if (i%4==2) {
-                HBM14_data[index_base * 128 + j] = query_data;
+            // uint32_t query_data_1 = Byte2Float(query_memory_ + i * size_data_per_query + 4 + 4 * j + 4);
+            // uint32_t query_data_2 = Byte2Float(query_memory_ + i * size_data_per_query + 4 + 4 * j + 8);
+            // uint32_t query_data_3 = Byte2Float(query_memory_ + i * size_data_per_query + 4 + 4 * j + 12);
+            // uint32_t query_data =   ((query_data_3 & 0xff) << 24) |
+            //                         ((query_data_2 & 0xff) << 16) |
+            //                         ((query_data_1 & 0xff) << 8 ) |
+            //                         ((query_data_0 & 0xff));
+            int index_base = i / 2;
+            if (i%2==0) {
+                HBM27_data[index_base * 128 + j] = query_data;
             }
             else {
-                HBM15_data[index_base * 128 + j] = query_data;
+                HBM28_data[index_base * 128 + j] = query_data;
             }
-#else
-            if (i%4==0) {
-                HBM12_data[index_base * 128 + j] = query_data;
-                HBM14_data[index_base * 128 + j] = query_data;
-            }
-            else if (i%4==1) {
-                HBM13_data[index_base * 128 + j] = query_data;
-                HBM15_data[index_base * 128 + j] = query_data;
-            }
-#endif
-            // HBM7_data[index_base + j] = query_data;
+            // DDR0_data[index_base + j] = query_data;
         }
-        // index_base += dim;
+        index_base += dim;
     }
-    // std::cout << "total size of DDR: " << index_base << ", " << (index_base * 4) << " bytes" << std::endl;
+    std::cout << "total size of DDR: " << index_base << ", " << (index_base * 4) << " bytes" << std::endl;
 
     // std::cout << "test data: " << std::endl;
     // for (int i = 0; i < 4; i++) {
@@ -368,7 +357,7 @@ int main(int argc, char** argv)
     // int q_id = 0;
     // std::cout << "query id: " << q_id << std::endl;
     // for (int i = 0; i < 128; i++) {
-    //     std::cout << HBM7_data[index_query+128*q_id+i] << ", ";
+    //     std::cout << DDR0_data[index_query+128*q_id+i] << ", ";
     //     if (i%16==15) {
     //         std::cout << std::endl;
     //     }
@@ -380,11 +369,11 @@ int main(int argc, char** argv)
     // for (int i = 0; i < 4; i++) {
     //     for (int j = 0; j < 32; j++) {
     //         if (j < 16) {
-    //             int dist_tmp = HBM0_data[enterpoint_node_*64+16*i+j] - HBM7_data[index_query+128*q_id+32*i+j];
+    //             int dist_tmp = HBM0_data[enterpoint_node_*64+16*i+j] - DDR0_data[index_query+128*q_id+32*i+j];
     //             q_id_29_dist += dist_tmp * dist_tmp;
     //         }
     //         else {
-    //             int dist_tmp = HBM1_data[enterpoint_node_*64+16*i+j-16] - HBM7_data[index_query+128*q_id+32*i+j];
+    //             int dist_tmp = HBM1_data[enterpoint_node_*64+16*i+j-16] - DDR0_data[index_query+128*q_id+32*i+j];
     //             q_id_29_dist += dist_tmp * dist_tmp;
     //         }
     //     }
@@ -395,13 +384,13 @@ int main(int argc, char** argv)
     // int total_dist = 0;
     // for (int i = 0; i < 4; i++) {
     //     for (int j = 0; j < 16; j++) {
-    //         int sub_dist_0 = HBM0_data[enterpoint_node_*64+16*i+j] - HBM7_data[index_query+32*i+j];
+    //         int sub_dist_0 = HBM0_data[enterpoint_node_*64+16*i+j] - DDR0_data[index_query+32*i+j];
     //         std::cout << sub_dist_0 << ", ";
     //         total_dist += sub_dist_0 * sub_dist_0;
     //     }
     //     std::cout << std::endl;
     //     for (int j = 0; j < 16; j++) {
-    //         int sub_dist_1 = HBM1_data[enterpoint_node_*64+16*i+j] - HBM7_data[index_query+32*i+j+16];
+    //         int sub_dist_1 = HBM1_data[enterpoint_node_*64+16*i+j] - DDR0_data[index_query+32*i+j+16];
     //         total_dist += sub_dist_1 * sub_dist_1;
     //         std::cout << sub_dist_1 << ", ";
     //     }
@@ -411,13 +400,13 @@ int main(int argc, char** argv)
     // std::cout << "dist: " << total_dist << std::endl;
 
     // std::cout << "high layer link: " << std::endl;
-    // int index_tmp = HBM7_data[enterpoint_node_];
+    // int index_tmp = DDR0_data[enterpoint_node_];
     // int level_tmp = element_levels_[enterpoint_node_];
     // std::cout << "index_tmp: " << index_tmp << std::endl;
     // for (int i = 0; i < level_tmp; i++) {
     //     std::cout << "level: " << (i+1) << std::endl;
     //     for (int j = 0; j < 16; j++) {
-    //         int read_tmp = HBM7_data[index_tmp*16+16*i+j];
+    //         int read_tmp = DDR0_data[index_tmp*16+16*i+j];
     //         if (j==0) {
     //             std::cout << "size: " << (read_tmp >> 24) << std::endl;
     //         }
@@ -428,7 +417,7 @@ int main(int argc, char** argv)
     
     // std::cout << "gnd layer link" << std::endl;
     // for (int i = 0; i < 32; i++) {
-    //     int read_tmp = HBM4_data[enterpoint_node_*32+i];
+    //     int read_tmp = HBM16_data[enterpoint_node_*32+i];
     //     if (i==0) {
     //         std::cout << "size: " << (read_tmp >> 24) << std::endl;
     //     }
@@ -498,15 +487,15 @@ int main(int argc, char** argv)
                         HBM5_data_ext, 
                         HBM6_data_ext, 
                         HBM7_data_ext, 
-                        HBM8_data_ext,
+                        HBM8_data_ext, 
                         HBM9_data_ext, 
-                        HBM10_data_ext, 
-                        HBM11_data_ext, 
-                        HBM12_data_ext, 
-                        HBM13_data_ext, 
-                        HBM14_data_ext, 
-                        HBM15_data_ext;
-                        // HBM4_data_ext, 
+                        // HBM10_data_ext, 
+                        // HBM11_data_ext, 
+                        // HBM12_data_ext, 
+                        // HBM13_data_ext, 
+                        // HBM14_data_ext, 
+                        // HBM15_data_ext, 
+                        // HBM16_data_ext, 
                         // HBM17_data_ext, 
                         // HBM18_data_ext, 
                         // HBM19_data_ext, 
@@ -515,15 +504,15 @@ int main(int argc, char** argv)
                         // HBM22_data_ext, 
                         // HBM23_data_ext, 
                         // HBM24_data_ext, 
-                        // HBM25_data_ext, 
-                        // HBM26_data_ext, 
-                        // HBM27_data_ext, 
-                        // HBM28_data_ext, 
+                        HBM25_data_ext, 
+                        HBM26_data_ext, 
+                        HBM27_data_ext, 
+                        HBM28_data_ext;
                         // HBM29_data_ext, 
                         // HBM30_data_ext, 
                         // HBM31_data_ext, 
 
-                        // HBM7_data_ext,
+                        // DDR0_data_ext,
                         // DDR1_data_ext;
 
 //////////////////////////////   TEMPLATE END  //////////////////////////////
@@ -569,33 +558,33 @@ int main(int argc, char** argv)
     HBM9_data_ext.param = 0;
     HBM9_data_ext.flags = bank[9];
 
-    HBM10_data_ext.obj = HBM10_data.data();
-    HBM10_data_ext.param = 0;
-    HBM10_data_ext.flags = bank[10];
+    // HBM10_data_ext.obj = HBM10_data.data();
+    // HBM10_data_ext.param = 0;
+    // HBM10_data_ext.flags = bank[10];
 
-    HBM11_data_ext.obj = HBM11_data.data();
-    HBM11_data_ext.param = 0;
-    HBM11_data_ext.flags = bank[11];
+    // HBM11_data_ext.obj = HBM11_data.data();
+    // HBM11_data_ext.param = 0;
+    // HBM11_data_ext.flags = bank[11];
 
-    HBM12_data_ext.obj = HBM12_data.data();
-    HBM12_data_ext.param = 0;
-    HBM12_data_ext.flags = bank[12];
+    // HBM12_data_ext.obj = HBM12_data.data();
+    // HBM12_data_ext.param = 0;
+    // HBM12_data_ext.flags = bank[12];
 
-    HBM13_data_ext.obj = HBM13_data.data();
-    HBM13_data_ext.param = 0;
-    HBM13_data_ext.flags = bank[13];
+    // HBM13_data_ext.obj = HBM13_data.data();
+    // HBM13_data_ext.param = 0;
+    // HBM13_data_ext.flags = bank[13];
 
-    HBM14_data_ext.obj = HBM14_data.data();
-    HBM14_data_ext.param = 0;
-    HBM14_data_ext.flags = bank[14];
+    // HBM14_data_ext.obj = HBM14_data.data();
+    // HBM14_data_ext.param = 0;
+    // HBM14_data_ext.flags = bank[14];
 
-    HBM15_data_ext.obj = HBM15_data.data();
-    HBM15_data_ext.param = 0;
-    HBM15_data_ext.flags = bank[15];
+    // HBM15_data_ext.obj = HBM15_data.data();
+    // HBM15_data_ext.param = 0;
+    // HBM15_data_ext.flags = bank[15];
 
-    // HBM4_data_ext.obj = HBM4_data.data();
-    // HBM4_data_ext.param = 0;
-    // HBM4_data_ext.flags = bank[16];
+    // HBM16_data_ext.obj = HBM16_data.data();
+    // HBM16_data_ext.param = 0;
+    // HBM16_data_ext.flags = bank[16];
 
     // HBM17_data_ext.obj = HBM17_data.data();
     // HBM17_data_ext.param = 0;
@@ -629,21 +618,21 @@ int main(int argc, char** argv)
     // HBM24_data_ext.param = 0;
     // HBM24_data_ext.flags = bank[24];
 
-    // HBM25_data_ext.obj = HBM25_data.data();
-    // HBM25_data_ext.param = 0;
-    // HBM25_data_ext.flags = bank[25];
+    HBM25_data_ext.obj = HBM25_data.data();
+    HBM25_data_ext.param = 0;
+    HBM25_data_ext.flags = bank[25];
 
-    // HBM26_data_ext.obj = HBM26_data.data();
-    // HBM26_data_ext.param = 0;
-    // HBM26_data_ext.flags = bank[26];
+    HBM26_data_ext.obj = HBM26_data.data();
+    HBM26_data_ext.param = 0;
+    HBM26_data_ext.flags = bank[26];
 
-    // HBM27_data_ext.obj = HBM27_data.data();
-    // HBM27_data_ext.param = 0;
-    // HBM27_data_ext.flags = bank[27];
+    HBM27_data_ext.obj = HBM27_data.data();
+    HBM27_data_ext.param = 0;
+    HBM27_data_ext.flags = bank[27];
 
-    // HBM28_data_ext.obj = HBM28_data.data();
-    // HBM28_data_ext.param = 0;
-    // HBM28_data_ext.flags = bank[28];
+    HBM28_data_ext.obj = HBM28_data.data();
+    HBM28_data_ext.param = 0;
+    HBM28_data_ext.flags = bank[28];
 
     // HBM29_data_ext.obj = HBM29_data.data();
     // HBM29_data_ext.param = 0;
@@ -657,9 +646,9 @@ int main(int argc, char** argv)
     // HBM31_data_ext.param = 0;
     // HBM31_data_ext.flags = bank[31];
 
-    // HBM7_data_ext.obj = HBM7_data.data();
-    // HBM7_data_ext.param = 0;
-    // HBM7_data_ext.flags = bank[32];
+    // DDR0_data_ext.obj = DDR0_data.data();
+    // DDR0_data_ext.param = 0;
+    // DDR0_data_ext.flags = bank[32];
 
     // DDR1_data_ext.obj = DDR1_data.data();
     // DDR1_data_ext.param = 0;
@@ -684,7 +673,7 @@ int main(int argc, char** argv)
             HBM_data_size *sizeof(uint32_t), &HBM3_data_ext, &err));
     // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     OCL_CHECK(err, cl::Buffer buffer_HBM4_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_link_size *sizeof(uint32_t), &HBM4_data_ext, &err));
+            HBM_data_size *sizeof(uint32_t), &HBM4_data_ext, &err));
     // std::cout << "HBM 5 size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     OCL_CHECK(err, cl::Buffer buffer_HBM5_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
             HBM_data_size *sizeof(uint32_t), &HBM5_data_ext, &err));
@@ -694,33 +683,33 @@ int main(int argc, char** argv)
     // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     OCL_CHECK(err, cl::Buffer buffer_HBM7_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
             HBM_data_size *sizeof(uint32_t), &HBM7_data_ext, &err));
-    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     OCL_CHECK(err, cl::Buffer buffer_HBM8_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
             HBM_data_size *sizeof(uint32_t), &HBM8_data_ext, &err));
     // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     OCL_CHECK(err, cl::Buffer buffer_HBM9_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_link_size *sizeof(uint32_t), &HBM9_data_ext, &err));
+            HBM_data_size *sizeof(uint32_t), &HBM9_data_ext, &err));
     // std::cout << "HBM 10 size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    OCL_CHECK(err, cl::Buffer buffer_HBM10_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_data_size *sizeof(uint32_t), &HBM10_data_ext, &err));
-    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    OCL_CHECK(err, cl::Buffer buffer_HBM11_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_data_size *sizeof(uint32_t), &HBM11_data_ext, &err));
-    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    OCL_CHECK(err, cl::Buffer buffer_HBM12_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_query_size *sizeof(uint32_t), &HBM12_data_ext, &err));
-    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    OCL_CHECK(err, cl::Buffer buffer_HBM13_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_query_size *sizeof(uint32_t), &HBM13_data_ext, &err));
-    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    OCL_CHECK(err, cl::Buffer buffer_HBM14_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_query_size *sizeof(uint32_t), &HBM14_data_ext, &err));
-    // std::cout << "HBM 15 size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    OCL_CHECK(err, cl::Buffer buffer_HBM15_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-            HBM_query_size *sizeof(uint32_t), &HBM15_data_ext, &err));
+    // OCL_CHECK(err, cl::Buffer buffer_HBM10_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+    //         HBM_data_size *sizeof(uint32_t), &HBM10_data_ext, &err));
+    // // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    // OCL_CHECK(err, cl::Buffer buffer_HBM11_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+    //         HBM_data_size *sizeof(uint32_t), &HBM11_data_ext, &err));
     // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    // OCL_CHECK(err, cl::Buffer buffer_HBM4_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-    //         HBM_data_size *sizeof(uint32_t), &HBM4_data_ext, &err));
+    // OCL_CHECK(err, cl::Buffer buffer_HBM12_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+    //         HBM_data_size *sizeof(uint32_t), &HBM12_data_ext, &err));
+    // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    // OCL_CHECK(err, cl::Buffer buffer_HBM13_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+    //         HBM_data_size *sizeof(uint32_t), &HBM13_data_ext, &err));
+    // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    // OCL_CHECK(err, cl::Buffer buffer_HBM14_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+    //         HBM_data_size *sizeof(uint32_t), &HBM14_data_ext, &err));
+    // // std::cout << "HBM 15 size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    // OCL_CHECK(err, cl::Buffer buffer_HBM15_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+    //         HBM_data_size *sizeof(uint32_t), &HBM15_data_ext, &err));
+    // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    // OCL_CHECK(err, cl::Buffer buffer_HBM16_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+    //         HBM_data_size *sizeof(uint32_t), &HBM16_data_ext, &err));
     // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     // OCL_CHECK(err, cl::Buffer buffer_HBM17_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
     //         HBM_data_size *sizeof(uint32_t), &HBM17_data_ext, &err));
@@ -745,18 +734,18 @@ int main(int argc, char** argv)
     // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     // OCL_CHECK(err, cl::Buffer buffer_HBM24_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
     //         HBM_data_size *sizeof(uint32_t), &HBM24_data_ext, &err));
-    // // std::cout << "HBM 25 size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    // OCL_CHECK(err, cl::Buffer buffer_HBM25_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-    //         HBM_data_size *sizeof(uint32_t), &HBM25_data_ext, &err));
-    // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    // OCL_CHECK(err, cl::Buffer buffer_HBM26_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-    //         HBM_data_size *sizeof(uint32_t), &HBM26_data_ext, &err));
-    // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    // OCL_CHECK(err, cl::Buffer buffer_HBM27_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-    //         HBM_data_size *sizeof(uint32_t), &HBM27_data_ext, &err));
-    // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
-    // OCL_CHECK(err, cl::Buffer buffer_HBM28_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
-    //         HBM_data_size *sizeof(uint32_t), &HBM28_data_ext, &err));
+    // std::cout << "HBM 25 size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    OCL_CHECK(err, cl::Buffer buffer_HBM25_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+            HBM_data_size *sizeof(uint32_t), &HBM25_data_ext, &err));
+    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    OCL_CHECK(err, cl::Buffer buffer_HBM26_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+            HBM_data_size *sizeof(uint32_t), &HBM26_data_ext, &err));
+    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    OCL_CHECK(err, cl::Buffer buffer_HBM27_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+            HBM_data_size *sizeof(uint32_t), &HBM27_data_ext, &err));
+    // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
+    OCL_CHECK(err, cl::Buffer buffer_HBM28_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
+            HBM_data_size *sizeof(uint32_t), &HBM28_data_ext, &err));
     // // std::cout << "HBM size: " << HBM_data_size *sizeof(uint32_t) << std::endl;
     // OCL_CHECK(err, cl::Buffer buffer_HBM29_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX, 
     //         HBM_data_size *sizeof(uint32_t), &HBM29_data_ext, &err));
@@ -768,8 +757,8 @@ int main(int argc, char** argv)
     //         HBM_data_size *sizeof(uint32_t), &HBM31_data_ext, &err));
 
     // std::cout << "DDR size: " << DDR_data_size *sizeof(uint32_t) << std::endl;
-    // OCL_CHECK(err, cl::Buffer buffer_HBM7_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, 
-    //         DDR_data_size *sizeof(int), &HBM7_data_ext, &err));
+    // OCL_CHECK(err, cl::Buffer buffer_DDR0_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY | CL_MEM_EXT_PTR_XILINX, 
+    //         DDR_data_size *sizeof(int), &DDR0_data_ext, &err));
     // OCL_CHECK(err, cl::Buffer buffer_DDR1_data(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY | CL_MEM_EXT_PTR_XILINX, 
     //         DDR_data_size *sizeof(int), &DDR1_data_ext, &err));
 // ============================================================================
@@ -791,13 +780,13 @@ int main(int argc, char** argv)
     OCL_CHECK(err, err = krnl_vector_add.setArg(7, buffer_HBM7_data));
     OCL_CHECK(err, err = krnl_vector_add.setArg(8, buffer_HBM8_data));
     OCL_CHECK(err, err = krnl_vector_add.setArg(9, buffer_HBM9_data));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(10, buffer_HBM10_data));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(11, buffer_HBM11_data));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(12, buffer_HBM12_data));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(13, buffer_HBM13_data));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(14, buffer_HBM14_data));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(15, buffer_HBM15_data));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(4, buffer_HBM4_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(10, buffer_HBM10_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(11, buffer_HBM11_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(12, buffer_HBM12_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(13, buffer_HBM13_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(14, buffer_HBM14_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(15, buffer_HBM15_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(4, buffer_HBM16_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(17, buffer_HBM17_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(18, buffer_HBM18_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(19, buffer_HBM19_data));
@@ -806,23 +795,23 @@ int main(int argc, char** argv)
     // OCL_CHECK(err, err = krnl_vector_add.setArg(22, buffer_HBM22_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(23, buffer_HBM23_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(24, buffer_HBM24_data));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(25, buffer_HBM25_data));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(26, buffer_HBM26_data));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(27, buffer_HBM27_data));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(28, buffer_HBM28_data));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(10, buffer_HBM25_data));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(11, buffer_HBM26_data));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(12, buffer_HBM27_data));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(13, buffer_HBM28_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(29, buffer_HBM29_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(30, buffer_HBM30_data));
     // OCL_CHECK(err, err = krnl_vector_add.setArg(31, buffer_HBM31_data));
 
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(5, buffer_HBM7_data));
-    // OCL_CHECK(err, err = krnl_vector_add.setArg(6, buffer_DDR1_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(14, buffer_DDR0_data));
+    // OCL_CHECK(err, err = krnl_vector_add.setArg(15, buffer_DDR1_data));
 
-	OCL_CHECK(err, err = krnl_vector_add.setArg(16, enterpoint_node_));
-	OCL_CHECK(err, err = krnl_vector_add.setArg(17, (int)cur_element_count));
-	OCL_CHECK(err, err = krnl_vector_add.setArg(18, maxlevel_));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(19, ef_));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(20, index_link));
-    OCL_CHECK(err, err = krnl_vector_add.setArg(21, q_size));
+	OCL_CHECK(err, err = krnl_vector_add.setArg(14, enterpoint_node_));
+	OCL_CHECK(err, err = krnl_vector_add.setArg(15, (int)cur_element_count));
+	OCL_CHECK(err, err = krnl_vector_add.setArg(16, maxlevel_));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(17, ef_));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(18, index_link));
+    OCL_CHECK(err, err = krnl_vector_add.setArg(19, q_size));
 //////////////////////////////   TEMPLATE END  //////////////////////////////
 // ------------------------------------------------------
 // Step 2: Copy Input data from Host to Global Memory on the device
@@ -834,11 +823,13 @@ int main(int argc, char** argv)
         buffer_HBM0_data, buffer_HBM1_data, 
         buffer_HBM2_data, buffer_HBM3_data, 
         buffer_HBM4_data, buffer_HBM5_data, buffer_HBM6_data, buffer_HBM7_data, 
-        buffer_HBM8_data, 
-        buffer_HBM9_data, buffer_HBM10_data, buffer_HBM11_data, buffer_HBM12_data, buffer_HBM13_data, buffer_HBM14_data, buffer_HBM15_data, 
-        // buffer_HBM4_data, 
-        // buffer_HBM17_data, buffer_HBM18_data, buffer_HBM19_data, buffer_HBM20_data, buffer_HBM21_data, buffer_HBM22_data, buffer_HBM23_data, buffer_HBM24_data, buffer_HBM25_data, buffer_HBM26_data, buffer_HBM27_data, buffer_HBM28_data, buffer_HBM29_data, buffer_HBM30_data, buffer_HBM31_data, 
-        // buffer_HBM7_data
+        buffer_HBM8_data, buffer_HBM9_data, 
+        // buffer_HBM10_data, buffer_HBM11_data, buffer_HBM12_data, buffer_HBM13_data, buffer_HBM14_data, buffer_HBM15_data, 
+        // buffer_HBM16_data, 
+        // buffer_HBM17_data, buffer_HBM18_data, buffer_HBM19_data, buffer_HBM20_data, buffer_HBM21_data, buffer_HBM22_data, buffer_HBM23_data, buffer_HBM24_data, 
+        buffer_HBM25_data, buffer_HBM26_data, buffer_HBM27_data, buffer_HBM28_data
+        // buffer_HBM29_data, buffer_HBM30_data, buffer_HBM31_data, 
+        // buffer_DDR0_data
         }, 0/* 0 means from host*/));
     OCL_CHECK(err, err = q.finish());
 //////////////////////////////   TEMPLATE END  //////////////////////////////
@@ -854,7 +845,7 @@ int main(int argc, char** argv)
 // Step 2: Copy Results from Device Global Memory to Host
 // --------------------------------------------------
     std::cout << "transfer memory back to host" << std::endl;
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_HBM11_data},CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_HBM26_data},CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 // OPENCL HOST CODE AREA END
     // int DDR_count = DDR1_data[0];
@@ -868,7 +859,7 @@ int main(int argc, char** argv)
     int correct = 0;
     for (int i = 0; i < q_size; i++) {
         int externalLabel = 0;
-        int internal_id = HBM11_data[ddr_count+2];
+        int internal_id = HBM26_data[ddr_count+2];
         memcpy(&externalLabel, (data_level0_memory_ + internal_id * size_data_per_element_ + label_offset_), sizeof(int));
         if (externalLabel==gt_array[100*i]) {
             correct++;

@@ -12,14 +12,14 @@ void anns(
     ap_uint<512>* HBM7_data,
     ap_uint<512>* HBM8_data,
     ap_uint<512>* HBM9_data,
-    ap_uint<512>* HBM10_data,
-    ap_uint<32>* HBM11_data,
-    ap_uint<512>* HBM12_data,
-    ap_uint<512>* HBM13_data,
-    ap_uint<512>* HBM14_data,
-    ap_uint<512>* HBM15_data,
+    // ap_uint<512>* HBM10_data,
+    // ap_uint<512>* HBM11_data,
+    // ap_uint<512>* HBM12_data,
+    // ap_uint<512>* HBM13_data,
+    // ap_uint<512>* HBM14_data,
+    // ap_uint<512>* HBM15_data,
     // ap_uint<512>* HBM16_data,
-    // hls::burst_maxi<ap_uint<512> > HBM17_data,
+    // ap_uint<512>* HBM17_data,
     // ap_uint<512>* HBM18_data,
     // ap_uint<512>* HBM19_data,
     // ap_uint<512>* HBM20_data,
@@ -27,10 +27,10 @@ void anns(
     // ap_uint<512>* HBM22_data,
     // ap_uint<512>* HBM23_data,
     // ap_uint<512>* HBM24_data,
-    // ap_uint<512>* HBM25_data,
-    // ap_uint<512>* HBM26_data,
-    // ap_uint<512>* HBM27_data,
-    // ap_uint<512>* HBM28_data,
+    ap_uint<512>* HBM25_data,
+    ap_uint<32>* HBM26_data,
+    ap_uint<512>* HBM27_data,
+    ap_uint<512>* HBM28_data,
     // ap_uint<512>* HBM29_data,
     // ap_uint<512>* HBM30_data,
     // ap_uint<512>* HBM31_data,
@@ -57,12 +57,12 @@ void anns(
 #pragma HLS INTERFACE m_axi port=HBM7_data  offset=slave bundle=gmem7
 #pragma HLS INTERFACE m_axi port=HBM8_data  offset=slave bundle=gmem8
 #pragma HLS INTERFACE m_axi port=HBM9_data  offset=slave bundle=gmem9
-#pragma HLS INTERFACE m_axi port=HBM10_data  offset=slave bundle=gmem10
-#pragma HLS INTERFACE m_axi port=HBM11_data  offset=slave bundle=gmem11
-#pragma HLS INTERFACE m_axi port=HBM12_data  offset=slave bundle=gmem12
-#pragma HLS INTERFACE m_axi port=HBM13_data  offset=slave bundle=gmem13
-#pragma HLS INTERFACE m_axi port=HBM14_data  offset=slave bundle=gmem14
-#pragma HLS INTERFACE m_axi port=HBM15_data  offset=slave bundle=gmem15
+// #pragma HLS INTERFACE m_axi port=HBM10_data  offset=slave bundle=gmem10
+// #pragma HLS INTERFACE m_axi port=HBM11_data  offset=slave bundle=gmem11
+// #pragma HLS INTERFACE m_axi port=HBM12_data  offset=slave bundle=gmem12
+// #pragma HLS INTERFACE m_axi port=HBM13_data  offset=slave bundle=gmem13
+// #pragma HLS INTERFACE m_axi port=HBM14_data  offset=slave bundle=gmem14
+// #pragma HLS INTERFACE m_axi port=HBM15_data  offset=slave bundle=gmem15
 // #pragma HLS INTERFACE m_axi port=HBM16_data  offset=slave bundle=gmem16
 // #pragma HLS INTERFACE m_axi port=HBM17_data  offset=slave bundle=gmem17
 // #pragma HLS INTERFACE m_axi port=HBM18_data  offset=slave bundle=gmem18
@@ -72,10 +72,10 @@ void anns(
 // #pragma HLS INTERFACE m_axi port=HBM22_data  offset=slave bundle=gmem22
 // #pragma HLS INTERFACE m_axi port=HBM23_data  offset=slave bundle=gmem23
 // #pragma HLS INTERFACE m_axi port=HBM24_data  offset=slave bundle=gmem24
-// #pragma HLS INTERFACE m_axi port=HBM25_data  offset=slave bundle=gmem25
-// #pragma HLS INTERFACE m_axi port=HBM26_data  offset=slave bundle=gmem26
-// #pragma HLS INTERFACE m_axi port=HBM27_data  offset=slave bundle=gmem27
-// #pragma HLS INTERFACE m_axi port=HBM28_data  offset=slave bundle=gmem28
+#pragma HLS INTERFACE m_axi port=HBM25_data  offset=slave bundle=gmem25
+#pragma HLS INTERFACE m_axi port=HBM26_data  offset=slave bundle=gmem26
+#pragma HLS INTERFACE m_axi port=HBM27_data  offset=slave bundle=gmem27
+#pragma HLS INTERFACE m_axi port=HBM28_data  offset=slave bundle=gmem28
 // #pragma HLS INTERFACE m_axi port=HBM29_data  offset=slave bundle=gmem29
 // #pragma HLS INTERFACE m_axi port=HBM30_data  offset=slave bundle=gmem30
 // #pragma HLS INTERFACE m_axi port=HBM31_data  offset=slave bundle=gmem31
@@ -93,12 +93,12 @@ void anns(
 #pragma HLS INTERFACE s_axilite port=HBM7_data  bundle=control
 #pragma HLS INTERFACE s_axilite port=HBM8_data  bundle=control
 #pragma HLS INTERFACE s_axilite port=HBM9_data  bundle=control
-#pragma HLS INTERFACE s_axilite port=HBM10_data  bundle=control
-#pragma HLS INTERFACE s_axilite port=HBM11_data  bundle=control
-#pragma HLS INTERFACE s_axilite port=HBM12_data  bundle=control
-#pragma HLS INTERFACE s_axilite port=HBM13_data  bundle=control
-#pragma HLS INTERFACE s_axilite port=HBM14_data  bundle=control
-#pragma HLS INTERFACE s_axilite port=HBM15_data  bundle=control
+// #pragma HLS INTERFACE s_axilite port=HBM10_data  bundle=control
+// #pragma HLS INTERFACE s_axilite port=HBM11_data  bundle=control
+// #pragma HLS INTERFACE s_axilite port=HBM12_data  bundle=control
+// #pragma HLS INTERFACE s_axilite port=HBM13_data  bundle=control
+// #pragma HLS INTERFACE s_axilite port=HBM14_data  bundle=control
+// #pragma HLS INTERFACE s_axilite port=HBM15_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM16_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM17_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM18_data  bundle=control
@@ -108,10 +108,10 @@ void anns(
 // #pragma HLS INTERFACE s_axilite port=HBM22_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM23_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM24_data  bundle=control
-// #pragma HLS INTERFACE s_axilite port=HBM25_data  bundle=control
-// #pragma HLS INTERFACE s_axilite port=HBM26_data  bundle=control
-// #pragma HLS INTERFACE s_axilite port=HBM27_data  bundle=control
-// #pragma HLS INTERFACE s_axilite port=HBM28_data  bundle=control
+#pragma HLS INTERFACE s_axilite port=HBM25_data  bundle=control
+#pragma HLS INTERFACE s_axilite port=HBM26_data  bundle=control
+#pragma HLS INTERFACE s_axilite port=HBM27_data  bundle=control
+#pragma HLS INTERFACE s_axilite port=HBM28_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM29_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM30_data  bundle=control
 // #pragma HLS INTERFACE s_axilite port=HBM31_data  bundle=control
@@ -133,108 +133,82 @@ void anns(
     hls::stream<ap_uint<512> > index_link_stream;
 #pragma HLS stream variable=index_link_stream depth=64
 
-
-//     hls::stream<ap_uint<512> > query_stream_0;
-// #pragma HLS stream variable=query_stream_0 depth=64
-//     hls::stream<ap_uint<512> > query_stream_1;
-// #pragma HLS stream variable=query_stream_1 depth=64
-    hls::stream<ap_uint<512> > query_stream_array[4][4];
+    hls::stream<ap_uint<512> > query_stream_array[2][4];
 #pragma HLS stream variable=query_stream_array depth=64
-//     hls::stream<ap_uint<512> > query_stream_0_array[2];
-// #pragma HLS stream variable=query_stream_0_array depth=64
-//     hls::stream<ap_uint<512> > query_stream_1_array[2];
-// #pragma HLS stream variable=query_stream_1_array depth=64
 
-    hls::stream<ap_uint<32> > ep_node_stream_array[4];
-#pragma HLS stream variable=ep_node_stream_array depth=64
-
-    hls::stream<ap_uint<32> > high_link_id_stream_array[4];
+    hls::stream<ap_uint<32> > high_link_id_stream_array[2];
 #pragma HLS stream variable=high_link_id_stream_array depth=64
 
-    hls::stream<ap_uint<512> > high_layer_links_stream_array[4];
+    hls::stream<ap_uint<32> > ep_node_stream_array[2];
+#pragma HLS stream variable=ep_node_stream_array depth=64
+
+    hls::stream<ap_uint<512> > high_layer_links_stream_array[2];
 #pragma HLS stream variable=high_layer_links_stream_array depth=64
 
-    hls::stream<ap_uint<512> > gnd_layer_links_stream_array[4];
+    hls::stream<ap_uint<512> > gnd_layer_links_stream_array[2];
 #pragma HLS stream variable=gnd_layer_links_stream_array depth=64
 
-    hls::stream<ap_uint<32> > node_id_stream_array[4][5];
+    hls::stream<ap_uint<32> > node_id_stream_array[2][5];
 #pragma HLS stream variable=node_id_stream_array depth=64
-//     hls::stream<ap_uint<32> > node_id_stream_0_array[3];
-// #pragma HLS stream variable=node_id_stream_0_array depth=64
-//     hls::stream<ap_uint<32> > node_id_stream_1_array[3];
-// #pragma HLS stream variable=node_id_stream_1_array depth=64
 
-    hls::stream<ap_uint<512> > data_stream_array[4][4];
+    hls::stream<ap_uint<512> > data_stream_array[2][4];
 #pragma HLS stream variable=data_stream_array depth=64
-//     hls::stream<ap_uint<512> > data_stream_0_array[2];
-// #pragma HLS stream variable=data_stream_0_array depth=64
-//     hls::stream<ap_uint<512> > data_stream_1_array[2];
-// #pragma HLS stream variable=data_stream_1_array depth=64
 
-    hls::stream<ap_uint<512> > gnd_link_stream_array[4];
+    hls::stream<ap_uint<512> > gnd_link_stream_array[2];
 #pragma HLS stream variable=gnd_link_stream_array depth=64
 
-    hls::stream<ap_uint<32> > sub_stream_array[4][4];
+    hls::stream<ap_uint<512> > sub_stream_array[2][4];
 #pragma HLS stream variable=sub_stream_array depth=64
-//     hls::stream<ap_uint<512> > sub_stream_0_array[2];
-// #pragma HLS stream variable=sub_stream_0_array depth=64
-//     hls::stream<ap_uint<512> > sub_stream_1_array[2];
-// #pragma HLS stream variable=sub_stream_1_array depth=64
 
-    hls::stream<ap_uint<64> > l2dist_stream_array[4];
+    hls::stream<ap_uint<64> > l2dist_stream_array[2];
 #pragma HLS stream variable=l2dist_stream_array depth=64
 
-    hls::stream<ap_uint<32> > cache_index_stream_array[4];
+    hls::stream<ap_uint<32> > cache_index_stream_array[2];
 #pragma HLS stream variable=cache_index_stream_array depth=64
 
-    hls::stream<ap_uint<32> > list_stream_array[4];
+    hls::stream<ap_uint<32> > list_stream_array[2];
 #pragma HLS stream variable=list_stream_array depth=64
 
 //     hls::stream<ap_uint<512> > cached_gnd_links_stream;
 // #pragma HLS stream variable=cached_gnd_links_stream depth=64
-    int batch_q_size = q_size / 4;
-    int channel_q_size = q_size / 2;
 /////////////////////////////////////
+    int batch_q_size = q_size / 2;
 
 #pragma HLS dataflow
     // index_link_stream: for initialization of links in high layer
     // query_stream: load query from DDR
-    loadLinks(HBM10_data, index_link_stream, cur_element_count, index_link, q_size);
+    loadLinks(HBM25_data, index_link_stream, cur_element_count, index_link, q_size);
 
-    loadQuery(HBM12_data, query_stream_array[0], batch_q_size);
-    loadQuery(HBM13_data, query_stream_array[1], batch_q_size);
-    loadQuery(HBM14_data, query_stream_array[2], batch_q_size);
-    loadQuery(HBM15_data, query_stream_array[3], batch_q_size);
+    loadQuery(HBM27_data, query_stream_array[0], batch_q_size);
+    loadQuery(HBM28_data, query_stream_array[1], batch_q_size);
 
 #ifdef DEBUG
-    inputDebug(ep_node_stream_array, gnd_layer_links_stream_array);
+    inputDebug(
+        ep_node_stream_array,
+        gnd_layer_links_stream_array
+    );
 #endif
 
-    epNode_high(ep_node_stream_array[0], high_link_id_stream_array[0], enterpoint_node_, maxlevel_, batch_q_size, 0);
-    epNode_high(ep_node_stream_array[1], high_link_id_stream_array[1], enterpoint_node_, maxlevel_, batch_q_size, 1);
-    epNode_high(ep_node_stream_array[2], high_link_id_stream_array[2], enterpoint_node_, maxlevel_, batch_q_size, 2);
-    epNode_high(ep_node_stream_array[3], high_link_id_stream_array[3], enterpoint_node_, maxlevel_, batch_q_size, 3);
+    epNode_high(ep_node_stream_array[0], high_link_id_stream_array[0], enterpoint_node_, maxlevel_, batch_q_size);
+    epNode_high(ep_node_stream_array[1], high_link_id_stream_array[1], enterpoint_node_, maxlevel_, batch_q_size);
 
     readHighLinks(index_link_stream, high_link_id_stream_array, high_layer_links_stream_array, enterpoint_node_, maxlevel_, cur_element_count, index_link, q_size);
 
-    mergeLink(high_layer_links_stream_array[0], gnd_layer_links_stream_array[0], node_id_stream_array[0], batch_q_size, 0);
-    mergeLink(high_layer_links_stream_array[1], gnd_layer_links_stream_array[1], node_id_stream_array[1], batch_q_size, 1);
-    mergeLink(high_layer_links_stream_array[2], gnd_layer_links_stream_array[2], node_id_stream_array[2], batch_q_size, 2);
-    mergeLink(high_layer_links_stream_array[3], gnd_layer_links_stream_array[3], node_id_stream_array[3], batch_q_size, 3);
+    mergeLink(high_layer_links_stream_array[0], gnd_layer_links_stream_array[0], node_id_stream_array[0], batch_q_size);
+    mergeLink(high_layer_links_stream_array[1], gnd_layer_links_stream_array[1], node_id_stream_array[1], batch_q_size);
 
-    readHBM_data(HBM0_data, node_id_stream_array[0][0], node_id_stream_array[1][0], data_stream_array[0][0], data_stream_array[1][0], cur_element_count, 0, channel_q_size);
-    readHBM_data(HBM1_data, node_id_stream_array[0][1], node_id_stream_array[1][1], data_stream_array[0][1], data_stream_array[1][1], cur_element_count, 0, channel_q_size);
-    readHBM_data(HBM2_data, node_id_stream_array[0][2], node_id_stream_array[1][2], data_stream_array[0][2], data_stream_array[1][2], cur_element_count, 0, channel_q_size);
-    readHBM_data(HBM3_data, node_id_stream_array[0][3], node_id_stream_array[1][3], data_stream_array[0][3], data_stream_array[1][3], cur_element_count, 0, channel_q_size);
+    readHBM_data(HBM0_data, node_id_stream_array[0][0], data_stream_array[0][0], cur_element_count, batch_q_size);
+    readHBM_data(HBM1_data, node_id_stream_array[0][1], data_stream_array[0][1], cur_element_count, batch_q_size);
+    readHBM_data(HBM2_data, node_id_stream_array[0][2], data_stream_array[0][2], cur_element_count, batch_q_size);
+    readHBM_data(HBM3_data, node_id_stream_array[0][3], data_stream_array[0][3], cur_element_count, batch_q_size);
 
-    readHBM_data(HBM5_data, node_id_stream_array[2][0], node_id_stream_array[3][0], data_stream_array[2][0], data_stream_array[3][0], cur_element_count, 1, channel_q_size);
-    readHBM_data(HBM6_data, node_id_stream_array[2][1], node_id_stream_array[3][1], data_stream_array[2][1], data_stream_array[3][1], cur_element_count, 1, channel_q_size);
-    readHBM_data(HBM7_data, node_id_stream_array[2][2], node_id_stream_array[3][2], data_stream_array[2][2], data_stream_array[3][2], cur_element_count, 1, channel_q_size);
-    readHBM_data(HBM8_data, node_id_stream_array[2][3], node_id_stream_array[3][3], data_stream_array[2][3], data_stream_array[3][3], cur_element_count, 1, channel_q_size);
+    readHBM_data(HBM5_data, node_id_stream_array[1][0], data_stream_array[1][0], cur_element_count, batch_q_size);
+    readHBM_data(HBM6_data, node_id_stream_array[1][1], data_stream_array[1][1], cur_element_count, batch_q_size);
+    readHBM_data(HBM7_data, node_id_stream_array[1][2], data_stream_array[1][2], cur_element_count, batch_q_size);
+    readHBM_data(HBM8_data, node_id_stream_array[1][3], data_stream_array[1][3], cur_element_count, batch_q_size);
 
-    readHBM_link(HBM4_data, node_id_stream_array[0][4], node_id_stream_array[1][4], gnd_link_stream_array[0], gnd_link_stream_array[1], cur_element_count, 0, channel_q_size);
-    readHBM_link(HBM9_data, node_id_stream_array[2][4], node_id_stream_array[3][4], gnd_link_stream_array[2], gnd_link_stream_array[3], cur_element_count, 1, channel_q_size);
-    // readHBM_link(HBM17_data, node_id_stream_array[0][9], node_id_stream_array[1][9], gnd_link_stream_array[0][1], gnd_link_stream_array[1][1], cur_element_count, q_size);
+    readHBM_link(HBM4_data, node_id_stream_array[0][4], gnd_link_stream_array[0], cur_element_count, batch_q_size);
+    readHBM_link(HBM9_data, node_id_stream_array[1][4], gnd_link_stream_array[1], cur_element_count, batch_q_size);
 
     subtractQuery(query_stream_array[0][0], data_stream_array[0][0], sub_stream_array[0][0], batch_q_size);
     subtractQuery(query_stream_array[0][1], data_stream_array[0][1], sub_stream_array[0][1], batch_q_size);
@@ -246,32 +220,18 @@ void anns(
     subtractQuery(query_stream_array[1][2], data_stream_array[1][2], sub_stream_array[1][2], batch_q_size);
     subtractQuery(query_stream_array[1][3], data_stream_array[1][3], sub_stream_array[1][3], batch_q_size);
 
-    subtractQuery(query_stream_array[2][0], data_stream_array[2][0], sub_stream_array[2][0], batch_q_size);
-    subtractQuery(query_stream_array[2][1], data_stream_array[2][1], sub_stream_array[2][1], batch_q_size);
-    subtractQuery(query_stream_array[2][2], data_stream_array[2][2], sub_stream_array[2][2], batch_q_size);
-    subtractQuery(query_stream_array[2][3], data_stream_array[2][3], sub_stream_array[2][3], batch_q_size);
-
-    subtractQuery(query_stream_array[3][0], data_stream_array[3][0], sub_stream_array[3][0], batch_q_size);
-    subtractQuery(query_stream_array[3][1], data_stream_array[3][1], sub_stream_array[3][1], batch_q_size);
-    subtractQuery(query_stream_array[3][2], data_stream_array[3][2], sub_stream_array[3][2], batch_q_size);
-    subtractQuery(query_stream_array[3][3], data_stream_array[3][3], sub_stream_array[3][3], batch_q_size);
-
-    combineDist(sub_stream_array[0], l2dist_stream_array[0], batch_q_size);
-    combineDist(sub_stream_array[1], l2dist_stream_array[1], batch_q_size);
-    combineDist(sub_stream_array[2], l2dist_stream_array[2], batch_q_size);
-    combineDist(sub_stream_array[3], l2dist_stream_array[3], batch_q_size);
+    adderTree(sub_stream_array[0], l2dist_stream_array[0], batch_q_size);
+    adderTree(sub_stream_array[1], l2dist_stream_array[1], batch_q_size);
 
     priorityQueue(l2dist_stream_array[0], ep_node_stream_array[0], cache_index_stream_array[0], list_stream_array[0], maxlevel_, enterpoint_node_, batch_q_size);
     priorityQueue(l2dist_stream_array[1], ep_node_stream_array[1], cache_index_stream_array[1], list_stream_array[1], maxlevel_, enterpoint_node_, batch_q_size);
-    priorityQueue(l2dist_stream_array[2], ep_node_stream_array[2], cache_index_stream_array[2], list_stream_array[2], maxlevel_, enterpoint_node_, batch_q_size);
-    priorityQueue(l2dist_stream_array[3], ep_node_stream_array[3], cache_index_stream_array[3], list_stream_array[3], maxlevel_, enterpoint_node_, batch_q_size);
 
     cacheGndLinks(gnd_link_stream_array[0], cache_index_stream_array[0], gnd_layer_links_stream_array[0], batch_q_size);
     cacheGndLinks(gnd_link_stream_array[1], cache_index_stream_array[1], gnd_layer_links_stream_array[1], batch_q_size);
-    cacheGndLinks(gnd_link_stream_array[2], cache_index_stream_array[2], gnd_layer_links_stream_array[2], batch_q_size);
-    cacheGndLinks(gnd_link_stream_array[3], cache_index_stream_array[3], gnd_layer_links_stream_array[3], batch_q_size);
+    // cacheGndLinks(gnd_link_stream, cache_index_stream, cached_gnd_links_stream, q_size);
+    // updateVisitedList(cached_gnd_links_stream, gnd_layer_links_stream, q_size);
 
-    writeMem(HBM11_data, list_stream_array, q_size);
+    writeMem(HBM26_data, list_stream_array, q_size);
 }
 
 
