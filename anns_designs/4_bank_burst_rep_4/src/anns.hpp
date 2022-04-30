@@ -41,25 +41,25 @@ void anns(
     ap_uint<512>* HBM7_data,
     ap_uint<512>* HBM8_data,
     ap_uint<512>* HBM9_data,
-    ap_uint<512>* HBM10_data,
-    ap_uint<512>* HBM11_data,
-    ap_uint<512>* HBM12_data,
-    ap_uint<512>* HBM13_data,
-    ap_uint<512>* HBM14_data,
-    ap_uint<512>* HBM15_data,
-    ap_uint<512>* HBM16_data,
-    ap_uint<512>* HBM17_data,
-    ap_uint<512>* HBM18_data,
-    ap_uint<512>* HBM19_data,
+    // ap_uint<512>* HBM10_data,
+    // ap_uint<512>* HBM11_data,
+    // ap_uint<512>* HBM12_data,
+    // ap_uint<512>* HBM13_data,
+    // ap_uint<512>* HBM14_data,
+    // ap_uint<512>* HBM15_data,
+    // ap_uint<512>* HBM16_data,
+    // ap_uint<512>* HBM17_data,
+    // ap_uint<512>* HBM18_data,
+    // ap_uint<512>* HBM19_data,
     // ap_uint<512>* HBM20_data,
     // ap_uint<512>* HBM21_data,
     // ap_uint<512>* HBM22_data,
     // ap_uint<512>* HBM23_data,
     // ap_uint<512>* HBM24_data,
     ap_uint<512>* HBM25_data,
-    // ap_uint<32>* HBM26_data,
-    // ap_uint<512>* HBM27_data,
-    // ap_uint<512>* HBM28_data,
+    ap_uint<32>* HBM26_data,
+    ap_uint<512>* HBM27_data,
+    ap_uint<512>* HBM28_data,
     // ap_uint<512>* HBM29_data,
     // ap_uint<512>* HBM30_data,
     // ap_uint<512>* HBM31_data,
@@ -79,9 +79,9 @@ void anns(
 
 
 void loadLinks(
-    ap_uint<512>* HBM_data, 
+    ap_uint<512>* DDR0_data, 
     hls::stream<ap_uint<512> >& index_link_stream, 
-    hls::stream<ap_uint<512> > query_stream_array[4], 
+    // hls::stream<ap_uint<512> > query_stream_array[4], 
     int cur_element_count, 
     int index_link,
     int q_size) {
@@ -94,32 +94,10 @@ void loadLinks(
     loadLinks:
     for (int j = 0; j < total_link_row; j++) {
         #pragma HLS pipeline II=1
-        ap_uint<512> tmp_data = HBM_data[j];
+        ap_uint<512> tmp_data = DDR0_data[j];
         index_link_stream.write(tmp_data);
     }
 
-    loadQuery:
-    for (int j = 0; j < q_size; j++) {
-        for (int k = 0; k < 8; k++) {
-            #pragma HLS pipeline II=1
-            int j_res = j % 4;
-            ap_uint<512> tmp_data = HBM_data[total_link_row + 8*j + k];
-            switch (j_res) {
-                case 0: 
-                    query_stream_array[0].write(tmp_data);
-                    break;
-                case 1: 
-                    query_stream_array[1].write(tmp_data);
-                    break;
-                case 2: 
-                    query_stream_array[2].write(tmp_data);
-                    break;
-                default: 
-                    query_stream_array[3].write(tmp_data);
-                    break;
-            }
-        }
-    }
     // loadQuery:
     // for (int j = 0; j < q_size * 2; j++) {
     //     #pragma HLS pipeline II=4
@@ -141,46 +119,6 @@ void loadLinks(
     //     query_stream_array[0].write(tmp_data_0);
     //     query_stream_array[1].write(tmp_data_1);
     // }
-}
-
-void distributeQuery(
-    hls::stream<ap_uint<512> >& query_stream, 
-    hls::stream<ap_uint<512> > query_stream_array[4],
-    int batch_q_size 
-) {
-    #pragma HLS inline off
-
-    for (int i = 0; i < batch_q_size; i++) {
-        for (int k = 0; k < 8; k++) {
-            ap_uint<512> tmp_data = query_stream.read();
-            switch (k) {
-                case 0: 
-                    query_stream_array[0].write(tmp_data);
-                    break;
-                case 1: 
-                    query_stream_array[1].write(tmp_data);
-                    break;
-                case 2: 
-                    query_stream_array[2].write(tmp_data);
-                    break;
-                case 3: 
-                    query_stream_array[3].write(tmp_data);
-                    break;
-                case 4: 
-                    query_stream_array[0].write(tmp_data);
-                    break;
-                case 5: 
-                    query_stream_array[1].write(tmp_data);
-                    break;
-                case 6: 
-                    query_stream_array[2].write(tmp_data);
-                    break;
-                default: 
-                    query_stream_array[3].write(tmp_data);
-                    break;
-            }
-        }
-    }
 }
 
 void loadQuery(
@@ -280,8 +218,8 @@ void epNode_high(
 
 void readHighLinks(
     hls::stream<ap_uint<512> >& index_link_stream, 
-    hls::stream<ap_uint<32> > high_link_id_stream_array[4], 
-    hls::stream<ap_uint<512> > high_layer_links_stream_array[4], 
+    hls::stream<ap_uint<32> > high_link_id_stream_array[2], 
+    hls::stream<ap_uint<512> > high_layer_links_stream_array[2], 
     int enterpoint_node_,
     int maxlevel_,
     int cur_element_count, 
@@ -314,7 +252,7 @@ void readHighLinks(
     std::cout << "readHighLinks: " << std::endl;
     readHighLinks:
     do {
-        if (!high_link_id_stream_array[0].empty() | !high_link_id_stream_array[1].empty() | !high_link_id_stream_array[2].empty() | !high_link_id_stream_array[3].empty()) {
+        if (!high_link_id_stream_array[0].empty() | !high_link_id_stream_array[1].empty()) {
             ap_uint<512> high_layer_links = 0;
             ap_uint<32> meta_info_32;
             int channel_id = 0;
@@ -322,17 +260,9 @@ void readHighLinks(
                 channel_id = 0;
                 meta_info_32 = high_link_id_stream_array[0].read();
             }
-            else if (!high_link_id_stream_array[1].empty()) {
+            else {
                 channel_id = 1;
                 meta_info_32 = high_link_id_stream_array[1].read();
-            }
-            else if (!high_link_id_stream_array[2].empty()) {
-                channel_id = 2;
-                meta_info_32 = high_link_id_stream_array[2].read();
-            }
-            else {
-                channel_id = 3;
-                meta_info_32 = high_link_id_stream_array[3].read();
             }
             // ap_uint<32> meta_info_32 = (!high_link_id_stream_array[0].empty()) ? high_link_id_stream_array[0].read() : high_link_id_stream_array[1].read();
             // ap_uint<2> channel_id = meta_info_32(31, 30);
@@ -353,14 +283,8 @@ void readHighLinks(
                     case 0:  
                         high_layer_links_stream_array[0].write(meta_info_512);
                         break;
-                    case 1:  
-                        high_layer_links_stream_array[1].write(meta_info_512);
-                        break;
-                    case 2:  
-                        high_layer_links_stream_array[2].write(meta_info_512);
-                        break;
                     default: 
-                        high_layer_links_stream_array[3].write(meta_info_512);
+                        high_layer_links_stream_array[1].write(meta_info_512);
                         break;
                 }
 #endif
@@ -370,14 +294,8 @@ void readHighLinks(
                     case 0:  
                         high_layer_links_stream_array[0].write(meta_info_512);
                         break;
-                    case 1:  
-                        high_layer_links_stream_array[1].write(meta_info_512);
-                        break;
-                    case 2:  
-                        high_layer_links_stream_array[2].write(meta_info_512);
-                        break;
                     default: 
-                        high_layer_links_stream_array[3].write(meta_info_512);
+                        high_layer_links_stream_array[1].write(meta_info_512);
                         break;
                 }
 
@@ -412,14 +330,8 @@ void readHighLinks(
                     case 0:  
                         high_layer_links_stream_array[0].write(high_layer_links);
                         break;
-                    case 1:  
-                        high_layer_links_stream_array[1].write(high_layer_links);
-                        break;
-                    case 2:  
-                        high_layer_links_stream_array[2].write(high_layer_links);
-                        break;
                     default: 
-                        high_layer_links_stream_array[3].write(high_layer_links);
+                        high_layer_links_stream_array[1].write(high_layer_links);
                         break;
                 }
             }
@@ -508,7 +420,7 @@ void mergeLink(
                 }
 
                 count++;
-                std::cout << "      input stream empty flag: " << high_layer_links_stream.empty() << std::endl;
+                std::cout << "      input high stream empty flag: " << high_layer_links_stream.empty() << std::endl;
                 
             }
             else if (!gnd_layer_links_stream.empty()) {
@@ -579,7 +491,7 @@ void mergeLink(
                 }
 
                 count++;
-                std::cout << "      input stream empty flag: " << gnd_layer_links_stream.empty() << std::endl;
+                std::cout << "      input gnd stream empty flag: " << gnd_layer_links_stream.empty() << std::endl;
                 
             }
             else {
@@ -1175,7 +1087,7 @@ void priorityQueue(
                         int node_id = l2_dist_tmp(63, 32);
                         // list_stream.write(node_id);
                         // list_stream.write(l2_dist);
-                        std::cout << "          node_id: " << node_id << ", dist: " << l2_dist << std::endl;
+                        // std::cout << "          node_id: " << node_id << ", dist: " << l2_dist << std::endl;
                         // if (l2_dist < cur_dist & node_id!=0x00ffffff) {
                         if (l2_dist < cur_dist) {
                             cur_dist = l2_dist;
@@ -1324,7 +1236,7 @@ void priorityQueue(
                     // continue progress in the queue
                     updateGndLayerFinal:
                     for (int j = 0; j < QUEUE_SIZE / 2; j++) {
-                        #pragma HLS pipeline II=2
+                        #pragma HLS pipeline II=1
                         swapQueue_even(cand_dist_list, cand_id_list, dyn_dist_list, dyn_id_list);
                         swapQueue_odd(cand_dist_list, cand_id_list, dyn_dist_list, dyn_id_list);
                     }
@@ -1344,20 +1256,20 @@ void priorityQueue(
                         std::cout << "      id: " << dyn_id_list[j] << ", dist: " << dyn_dist_list[j] << std::endl;
                     }
 
-                    // if (stopLoop) {
-                    //     list_stream.write(query_count);
-                    //     std::cout << "query_count: " << query_count << std::endl;
-                    //     writeIntoDDR:
-                    //     for (int j = 0; j < QUEUE_SIZE; j++) {
-                    //         list_stream.write(cand_id_list[j]);
-                    //         list_stream.write(cand_dist_list[j]);
-                    //         list_stream.write(dyn_id_list[j]);
-                    //         list_stream.write(dyn_dist_list[j]);
-                    //     }
-                    //     query_count++;
-                    //     // list_stream.write(level_count);
-                    //     // list_stream.write(total_size_count);
-                    // }
+                    if (stopLoop) {
+                        list_stream.write(query_count);
+                        std::cout << "query_count: " << query_count << std::endl;
+                        writeIntoDDR:
+                        for (int j = 0; j < QUEUE_SIZE; j++) {
+                            list_stream.write(cand_id_list[j]);
+                            list_stream.write(cand_dist_list[j]);
+                            list_stream.write(dyn_id_list[j]);
+                            list_stream.write(dyn_dist_list[j]);
+                        }
+                        query_count++;
+                        // list_stream.write(level_count);
+                        // list_stream.write(total_size_count);
+                    }
 
 
                 }
@@ -1457,8 +1369,8 @@ void cacheGndLinks(
 }
 
 void inputDebug(
-    hls::stream<ap_uint<32> > ep_node_stream_array[5],
-    hls::stream<ap_uint<512> > gnd_layer_links_stream_array[5]
+    hls::stream<ap_uint<32> > ep_node_stream_array[2],
+    hls::stream<ap_uint<512> > gnd_layer_links_stream_array[2]
 ) {
     #pragma HLS inline off
 
@@ -1466,473 +1378,469 @@ void inputDebug(
     ap_uint<32> tmp_data = 0;
     ap_uint<512> tmp_neighbor_0, tmp_neighbor_1;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 1; i++) {
     // for query id 0
-        if (i%2==0) {
-            tmp_data = 0;
+        tmp_data = 0;
 
-            tmp_data(20, 1) = 115;
-            tmp_data(23, 21) = 1;
-            ep_node_stream_array[i].write(tmp_data);
+        tmp_data(20, 1) = 115;
+        tmp_data(23, 21) = 1;
+        ep_node_stream_array[2*i].write(tmp_data);
 
-            tmp_data(20, 1) = 174;
-            tmp_data(23, 21) = 1;
-            ep_node_stream_array[i].write(tmp_data);
+        tmp_data(20, 1) = 174;
+        tmp_data(23, 21) = 1;
+        ep_node_stream_array[2*i].write(tmp_data);
 
-            tmp_data(20, 1) = 174;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 7;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    = 131;
-            tmp_neighbor_0(63, 32)   = 99;
-            tmp_neighbor_0(95, 64)   = 149;
-            tmp_neighbor_0(127, 96)  = 136;
-            tmp_neighbor_0(159, 128) = 190;
-            tmp_neighbor_0(191, 160) = 193;
-            tmp_neighbor_0(223, 192) = 292;
-            tmp_neighbor_0(255, 224) = 0x00ffffff;
-            tmp_neighbor_0(287, 256) = 0x00ffffff;
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 174;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 7;
+        gnd_layer_links_stream_array[2*i].write(tmp_data);
+        tmp_neighbor_0(31, 0)    = 131;
+        tmp_neighbor_0(63, 32)   = 99;
+        tmp_neighbor_0(95, 64)   = 149;
+        tmp_neighbor_0(127, 96)  = 136;
+        tmp_neighbor_0(159, 128) = 190;
+        tmp_neighbor_0(191, 160) = 193;
+        tmp_neighbor_0(223, 192) = 292;
+        tmp_neighbor_0(255, 224) = 0x00ffffff;
+        tmp_neighbor_0(287, 256) = 0x00ffffff;
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 292;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 7;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    = 137;
-            tmp_neighbor_0(63, 32)   = 123;
-            tmp_neighbor_0(95, 64)   = 131; // visited
-            tmp_neighbor_0(127, 96)  = 174; // visited
-            tmp_neighbor_0(159, 128) = 194;
-            tmp_neighbor_0(191, 160) = 224;
-            tmp_neighbor_0(223, 192) = 283;
-            tmp_neighbor_0(255, 224) = 0x00ffffff;
-            tmp_neighbor_0(287, 256) = 0x00ffffff;
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 292;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 7;
+        gnd_layer_links_stream_array[2*i].write(tmp_data);
+        tmp_neighbor_0(31, 0)    = 137;
+        tmp_neighbor_0(63, 32)   = 123;
+        tmp_neighbor_0(95, 64)   = 131; // visited
+        tmp_neighbor_0(127, 96)  = 174; // visited
+        tmp_neighbor_0(159, 128) = 194;
+        tmp_neighbor_0(191, 160) = 224;
+        tmp_neighbor_0(223, 192) = 283;
+        tmp_neighbor_0(255, 224) = 0x00ffffff;
+        tmp_neighbor_0(287, 256) = 0x00ffffff;
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 292;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 9;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    =  47;
-            tmp_neighbor_0(63, 32)   = 194; // visited
-            tmp_neighbor_0(95, 64)   = 137; // visited
-            tmp_neighbor_0(127, 96)  = 123; // visited
-            tmp_neighbor_0(159, 128) = 149; // visited
-            tmp_neighbor_0(191, 160) = 131; // visited
-            tmp_neighbor_0(223, 192) = 190; // visited
-            tmp_neighbor_0(255, 224) = 284;
-            tmp_neighbor_0(287, 256) = 292; // visited
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 292;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 9;
+        gnd_layer_links_stream_array[2*i].write(tmp_data);
+        tmp_neighbor_0(31, 0)    =  47;
+        tmp_neighbor_0(63, 32)   = 194; // visited
+        tmp_neighbor_0(95, 64)   = 137; // visited
+        tmp_neighbor_0(127, 96)  = 123; // visited
+        tmp_neighbor_0(159, 128) = 149; // visited
+        tmp_neighbor_0(191, 160) = 131; // visited
+        tmp_neighbor_0(223, 192) = 190; // visited
+        tmp_neighbor_0(255, 224) = 284;
+        tmp_neighbor_0(287, 256) = 292; // visited
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 123;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 5;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    = 287;
-            tmp_neighbor_0(63, 32)   = 219;  
-            tmp_neighbor_0(95, 64)   = 145;  
-            tmp_neighbor_0(127, 96)  = 174; // visited 
-            tmp_neighbor_0(159, 128) = 224; // visited 
-            tmp_neighbor_0(191, 160) = 0x00ffffff;  
-            tmp_neighbor_0(223, 192) = 0x00ffffff;  
-            tmp_neighbor_0(255, 224) = 0x00ffffff;
-            tmp_neighbor_0(287, 256) = 0x00ffffff;  
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 123;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 5;
+        gnd_layer_links_stream_array[2*i].write(tmp_data);
+        tmp_neighbor_0(31, 0)    = 287;
+        tmp_neighbor_0(63, 32)   = 219;  
+        tmp_neighbor_0(95, 64)   = 145;  
+        tmp_neighbor_0(127, 96)  = 174; // visited 
+        tmp_neighbor_0(159, 128) = 224; // visited 
+        tmp_neighbor_0(191, 160) = 0x00ffffff;  
+        tmp_neighbor_0(223, 192) = 0x00ffffff;  
+        tmp_neighbor_0(255, 224) = 0x00ffffff;
+        tmp_neighbor_0(287, 256) = 0x00ffffff;  
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 123;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 8;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    = 149; // visited
-            tmp_neighbor_0(63, 32)   = 199; 
-            tmp_neighbor_0(95, 64)   = 244; 
-            tmp_neighbor_0(127, 96)  = 147; 
-            tmp_neighbor_0(159, 128) = 275; 
-            tmp_neighbor_0(191, 160) = 280; 
-            tmp_neighbor_0(223, 192) = 284; // visited
-            tmp_neighbor_0(255, 224) = 292; // visited
-            tmp_neighbor_0(287, 256) = 0x00ffffff; 
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 123;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 8;
+        gnd_layer_links_stream_array[2*i].write(tmp_data);
+        tmp_neighbor_0(31, 0)    = 149; // visited
+        tmp_neighbor_0(63, 32)   = 199; 
+        tmp_neighbor_0(95, 64)   = 244; 
+        tmp_neighbor_0(127, 96)  = 147; 
+        tmp_neighbor_0(159, 128) = 275; 
+        tmp_neighbor_0(191, 160) = 280; 
+        tmp_neighbor_0(223, 192) = 284; // visited
+        tmp_neighbor_0(255, 224) = 292; // visited
+        tmp_neighbor_0(287, 256) = 0x00ffffff; 
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i].write(tmp_neighbor_1);
 
-            tmp_data(0, 0) = 1;
-            tmp_data(20, 1) = 123;
-            tmp_data(23, 21) = 0;
-            ep_node_stream_array[i].write(tmp_data);
-            gnd_layer_links_stream_array[i].write(tmp_data);
+        tmp_data(0, 0) = 1;
+        tmp_data(20, 1) = 123;
+        tmp_data(23, 21) = 0;
+        ep_node_stream_array[2*i].write(tmp_data);
+        gnd_layer_links_stream_array[2*i].write(tmp_data);
 
-        }
-        else {
-            // for query id 1
-            tmp_data = 0;
+        // for query id 1
+        tmp_data = 0;
 
-            tmp_data(20, 1) = 115;
-            tmp_data(23, 21) = 1;
-            ep_node_stream_array[i].write(tmp_data);
+        tmp_data(20, 1) = 115;
+        tmp_data(23, 21) = 1;
+        ep_node_stream_array[2*i+1].write(tmp_data);
 
-            tmp_data(20, 1) = 128;
-            tmp_data(23, 21) = 1;
-            ep_node_stream_array[i].write(tmp_data);
+        tmp_data(20, 1) = 128;
+        tmp_data(23, 21) = 1;
+        ep_node_stream_array[2*i+1].write(tmp_data);
 
-            tmp_data(20, 1) = 128;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 12;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    =  4;
-            tmp_neighbor_0(63, 32)   =  9;
-            tmp_neighbor_0(95, 64)   =  2;
-            tmp_neighbor_0(127, 96)  = 12;
-            tmp_neighbor_0(159, 128) = 12;
-            tmp_neighbor_0(191, 160) = 12;
-            tmp_neighbor_0(223, 192) = 13;
-            tmp_neighbor_0(255, 224) = 13;
-            tmp_neighbor_0(287, 256) = 13;
-            tmp_neighbor_0(319, 288) = 14;
-            tmp_neighbor_0(351, 320) = 21;
-            tmp_neighbor_0(383, 352) = 31;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 128;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 12;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_data);
+        tmp_neighbor_0(31, 0)    =  4;
+        tmp_neighbor_0(63, 32)   =  9;
+        tmp_neighbor_0(95, 64)   =  2;
+        tmp_neighbor_0(127, 96)  = 12;
+        tmp_neighbor_0(159, 128) = 12;
+        tmp_neighbor_0(191, 160) = 12;
+        tmp_neighbor_0(223, 192) = 13;
+        tmp_neighbor_0(255, 224) = 13;
+        tmp_neighbor_0(287, 256) = 13;
+        tmp_neighbor_0(319, 288) = 14;
+        tmp_neighbor_0(351, 320) = 21;
+        tmp_neighbor_0(383, 352) = 31;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 120;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 10;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    =  95;
-            tmp_neighbor_0(63, 32)   =  94; // visited
-            tmp_neighbor_0(95, 64)   = 102;
-            tmp_neighbor_0(127, 96)  = 106;
-            tmp_neighbor_0(159, 128) = 127;
-            tmp_neighbor_0(191, 160) = 128; // visited
-            tmp_neighbor_0(223, 192) = 138;
-            tmp_neighbor_0(255, 224) = 147;
-            tmp_neighbor_0(287, 256) = 150;
-            tmp_neighbor_0(319, 288) = 154;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 120;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 10;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_data);
+        tmp_neighbor_0(31, 0)    =  95;
+        tmp_neighbor_0(63, 32)   =  94; // visited
+        tmp_neighbor_0(95, 64)   = 102;
+        tmp_neighbor_0(127, 96)  = 106;
+        tmp_neighbor_0(159, 128) = 127;
+        tmp_neighbor_0(191, 160) = 128; // visited
+        tmp_neighbor_0(223, 192) = 138;
+        tmp_neighbor_0(255, 224) = 147;
+        tmp_neighbor_0(287, 256) = 150;
+        tmp_neighbor_0(319, 288) = 154;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 106;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 6;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    = 102;
-            tmp_neighbor_0(63, 32)   =  97;
-            tmp_neighbor_0(95, 64)   = 144;
-            tmp_neighbor_0(127, 96)  = 125;
-            tmp_neighbor_0(159, 128) = 131;
-            tmp_neighbor_0(191, 160) = 263;
-            tmp_neighbor_0(223, 192) = 0x00ffffff;
-            tmp_neighbor_0(255, 224) = 0x00ffffff;
-            tmp_neighbor_0(287, 256) = 0x00ffffff;
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 106;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 6;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_data);
+        tmp_neighbor_0(31, 0)    = 102;
+        tmp_neighbor_0(63, 32)   =  97;
+        tmp_neighbor_0(95, 64)   = 144;
+        tmp_neighbor_0(127, 96)  = 125;
+        tmp_neighbor_0(159, 128) = 131;
+        tmp_neighbor_0(191, 160) = 263;
+        tmp_neighbor_0(223, 192) = 0x00ffffff;
+        tmp_neighbor_0(255, 224) = 0x00ffffff;
+        tmp_neighbor_0(287, 256) = 0x00ffffff;
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 106;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 12;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    =  86;
-            tmp_neighbor_0(63, 32)   =  46;
-            tmp_neighbor_0(95, 64)   =  68;
-            tmp_neighbor_0(127, 96)  =  96;
-            tmp_neighbor_0(159, 128) =  26;
-            tmp_neighbor_0(191, 160) = 106;
-            tmp_neighbor_0(223, 192) = 123;
-            tmp_neighbor_0(255, 224) = 124;
-            tmp_neighbor_0(287, 256) = 145;
-            tmp_neighbor_0(319, 288) = 154;
-            tmp_neighbor_0(351, 320) = 272;
-            tmp_neighbor_0(383, 352) = 275;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 106;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 12;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_data);
+        tmp_neighbor_0(31, 0)    =  86;
+        tmp_neighbor_0(63, 32)   =  46;
+        tmp_neighbor_0(95, 64)   =  68;
+        tmp_neighbor_0(127, 96)  =  96;
+        tmp_neighbor_0(159, 128) =  26;
+        tmp_neighbor_0(191, 160) = 106;
+        tmp_neighbor_0(223, 192) = 123;
+        tmp_neighbor_0(255, 224) = 124;
+        tmp_neighbor_0(287, 256) = 145;
+        tmp_neighbor_0(319, 288) = 154;
+        tmp_neighbor_0(351, 320) = 272;
+        tmp_neighbor_0(383, 352) = 275;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 123;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 8;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    =  22;
-            tmp_neighbor_0(63, 32)   =  97;
-            tmp_neighbor_0(95, 64)   = 107;
-            tmp_neighbor_0(127, 96)  = 123;
-            tmp_neighbor_0(159, 128) = 228;
-            tmp_neighbor_0(191, 160) = 271;
-            tmp_neighbor_0(223, 192) = 285;
-            tmp_neighbor_0(255, 224) = 292;
-            tmp_neighbor_0(287, 256) = 0x00ffffff;
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 123;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 8;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_data);
+        tmp_neighbor_0(31, 0)    =  22;
+        tmp_neighbor_0(63, 32)   =  97;
+        tmp_neighbor_0(95, 64)   = 107;
+        tmp_neighbor_0(127, 96)  = 123;
+        tmp_neighbor_0(159, 128) = 228;
+        tmp_neighbor_0(191, 160) = 271;
+        tmp_neighbor_0(223, 192) = 285;
+        tmp_neighbor_0(255, 224) = 292;
+        tmp_neighbor_0(287, 256) = 0x00ffffff;
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_1);
 
-            tmp_data(20, 1) = 106;
-            tmp_data(23, 21) = 0;
-            tmp_data(29, 24) = 7;
-            gnd_layer_links_stream_array[i].write(tmp_data);
-            tmp_neighbor_0(31, 0)    =  22;
-            tmp_neighbor_0(63, 32)   =  97;
-            tmp_neighbor_0(95, 64)   = 107;
-            tmp_neighbor_0(127, 96)  = 145;
-            tmp_neighbor_0(159, 128) = 190;
-            tmp_neighbor_0(191, 160) = 224;
-            tmp_neighbor_0(223, 192) = 243;
-            tmp_neighbor_0(255, 224) = 0x00ffffff;
-            tmp_neighbor_0(287, 256) = 0x00ffffff;
-            tmp_neighbor_0(319, 288) = 0x00ffffff;
-            tmp_neighbor_0(351, 320) = 0x00ffffff;
-            tmp_neighbor_0(383, 352) = 0x00ffffff;
-            tmp_neighbor_0(415, 384) = 0x00ffffff;
-            tmp_neighbor_0(447, 416) = 0x00ffffff;
-            tmp_neighbor_0(479, 448) = 0x00ffffff;
-            tmp_neighbor_0(511, 480) = 0x00ffffff;
-            tmp_neighbor_1(31, 0)    = 0x00ffffff;
-            tmp_neighbor_1(63, 32)   = 0x00ffffff;
-            tmp_neighbor_1(95, 64)   = 0x00ffffff;
-            tmp_neighbor_1(127, 96)  = 0x00ffffff;
-            tmp_neighbor_1(159, 128) = 0x00ffffff;
-            tmp_neighbor_1(191, 160) = 0x00ffffff;
-            tmp_neighbor_1(223, 192) = 0x00ffffff;
-            tmp_neighbor_1(255, 224) = 0x00ffffff;
-            tmp_neighbor_1(287, 256) = 0x00ffffff;
-            tmp_neighbor_1(319, 288) = 0x00ffffff;
-            tmp_neighbor_1(351, 320) = 0x00ffffff;
-            tmp_neighbor_1(383, 352) = 0x00ffffff;
-            tmp_neighbor_1(415, 384) = 0x00ffffff;
-            tmp_neighbor_1(447, 416) = 0x00ffffff;
-            tmp_neighbor_1(479, 448) = 0x00ffffff;
-            tmp_neighbor_1(511, 480) = 0x00ffffff;
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_0);
-            gnd_layer_links_stream_array[i].write(tmp_neighbor_1);
+        tmp_data(20, 1) = 106;
+        tmp_data(23, 21) = 0;
+        tmp_data(29, 24) = 7;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_data);
+        tmp_neighbor_0(31, 0)    =  22;
+        tmp_neighbor_0(63, 32)   =  97;
+        tmp_neighbor_0(95, 64)   = 107;
+        tmp_neighbor_0(127, 96)  = 145;
+        tmp_neighbor_0(159, 128) = 190;
+        tmp_neighbor_0(191, 160) = 224;
+        tmp_neighbor_0(223, 192) = 243;
+        tmp_neighbor_0(255, 224) = 0x00ffffff;
+        tmp_neighbor_0(287, 256) = 0x00ffffff;
+        tmp_neighbor_0(319, 288) = 0x00ffffff;
+        tmp_neighbor_0(351, 320) = 0x00ffffff;
+        tmp_neighbor_0(383, 352) = 0x00ffffff;
+        tmp_neighbor_0(415, 384) = 0x00ffffff;
+        tmp_neighbor_0(447, 416) = 0x00ffffff;
+        tmp_neighbor_0(479, 448) = 0x00ffffff;
+        tmp_neighbor_0(511, 480) = 0x00ffffff;
+        tmp_neighbor_1(31, 0)    = 0x00ffffff;
+        tmp_neighbor_1(63, 32)   = 0x00ffffff;
+        tmp_neighbor_1(95, 64)   = 0x00ffffff;
+        tmp_neighbor_1(127, 96)  = 0x00ffffff;
+        tmp_neighbor_1(159, 128) = 0x00ffffff;
+        tmp_neighbor_1(191, 160) = 0x00ffffff;
+        tmp_neighbor_1(223, 192) = 0x00ffffff;
+        tmp_neighbor_1(255, 224) = 0x00ffffff;
+        tmp_neighbor_1(287, 256) = 0x00ffffff;
+        tmp_neighbor_1(319, 288) = 0x00ffffff;
+        tmp_neighbor_1(351, 320) = 0x00ffffff;
+        tmp_neighbor_1(383, 352) = 0x00ffffff;
+        tmp_neighbor_1(415, 384) = 0x00ffffff;
+        tmp_neighbor_1(447, 416) = 0x00ffffff;
+        tmp_neighbor_1(479, 448) = 0x00ffffff;
+        tmp_neighbor_1(511, 480) = 0x00ffffff;
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_0);
+        gnd_layer_links_stream_array[2*i+1].write(tmp_neighbor_1);
 
-            tmp_data(0, 0) = 1;
-            tmp_data(20, 1) = 106;
-            tmp_data(23, 21) = 0;
-            ep_node_stream_array[i].write(tmp_data);
-            gnd_layer_links_stream_array[i].write(tmp_data);
-        }
+        tmp_data(0, 0) = 1;
+        tmp_data(20, 1) = 106;
+        tmp_data(23, 21) = 0;
+        ep_node_stream_array[2*i+1].write(tmp_data);
+        gnd_layer_links_stream_array[2*i+1].write(tmp_data);
 
     }
 
@@ -2009,7 +1917,7 @@ void inputDebug(
 // }
 void writeMem(
     ap_uint<32>* HBM_data, 
-    hls::stream<ap_uint<32> > list_stream_array[4], 
+    hls::stream<ap_uint<32> > list_stream_array[2], 
     int q_size) {
     #pragma HLS inline off
     std::cout << "writeMem: " << std::endl;
@@ -2018,11 +1926,11 @@ void writeMem(
     int query_count = 0;
 
     do {
-        if (!list_stream_array[0].empty() | !list_stream_array[1].empty() | !list_stream_array[2].empty() | !list_stream_array[3].empty()) {
+        if (!list_stream_array[0].empty() | !list_stream_array[1].empty()) {
             if (!list_stream_array[0].empty()) {
                 ap_uint<32> q_count = list_stream_array[0].read();
                 
-                DDR_pos = 4 * q_count * 512;
+                DDR_pos = 2 * q_count * 512;
                 std::cout << "DDR_pos: " << DDR_pos << std::endl;
                 for (int j = 0; j < 4 * QUEUE_SIZE; j++) {
                     int data_tmp = list_stream_array[0].read();
@@ -2030,35 +1938,12 @@ void writeMem(
                 } 
                 query_count++;
             }
-            else if (!list_stream_array[1].empty()) {
+            else {
                 ap_uint<32> q_count = list_stream_array[1].read();
-                
-                DDR_pos = (4 * q_count + 1) * 512;
+                DDR_pos = (2*q_count+1) * 512;
                 std::cout << "DDR_pos: " << DDR_pos << std::endl;
                 for (int j = 0; j < 4 * QUEUE_SIZE; j++) {
                     int data_tmp = list_stream_array[1].read();
-                    HBM_data[DDR_pos + j] = data_tmp;
-                } 
-                query_count++;
-            }
-            else if (!list_stream_array[2].empty()) {
-                ap_uint<32> q_count = list_stream_array[2].read();
-                
-                DDR_pos = (4 * q_count + 2) * 512;
-                std::cout << "DDR_pos: " << DDR_pos << std::endl;
-                for (int j = 0; j < 4 * QUEUE_SIZE; j++) {
-                    int data_tmp = list_stream_array[2].read();
-                    HBM_data[DDR_pos + j] = data_tmp;
-                } 
-                query_count++;
-            }
-            else {
-                ap_uint<32> q_count = list_stream_array[3].read();
-                
-                DDR_pos = (4 * q_count + 3) * 512;
-                std::cout << "DDR_pos: " << DDR_pos << std::endl;
-                for (int j = 0; j < 4 * QUEUE_SIZE; j++) {
-                    int data_tmp = list_stream_array[3].read();
                     HBM_data[DDR_pos + j] = data_tmp;
                 } 
                 query_count++;
